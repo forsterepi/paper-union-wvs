@@ -1,0 +1,113 @@
+digraph flowchart {
+  rankdir = TB
+  bgcolor = "transparent"
+
+  pop_start [label = "Time series data set\n N = @@1", shape = box]
+
+  pop_mem [label = "Union membership available\n n = @@2", shape = box]
+  pop_occ [label = "Occupation available\n n = @@4", shape = box]
+  pop_empl [label = "Employment status available\n n = @@6", shape = box]
+  pop_gender [label = "Gender available\n n = @@8", shape = box]
+
+  pop_srh [label = "Self-rated health\n available\n n = @@10", shape = box]
+  pop_swl [label = "Life satisfaction\n available\n n = @@11", shape = box]
+
+  pop_tud_srh [label = "Trade union density\n available\n n = @@12", shape = box]
+  pop_cbc_srh [label = "Collective bargaining\n coverage available\n n = @@14", shape = box]
+  pop_tud_swl [label = "Trade union density\n available\n n = @@16", shape = box]
+  pop_cbc_swl [label = "Collective bargaining\n coverage available\n n = @@18", shape = box]
+
+  pop_work_srh [label = "Working population\n n = @@20", shape = box]
+  pop_work_swl [label = "Working population\n n = @@22", shape = box]
+
+  pop_covid_srh [label = "Before 2020\n n = @@24", shape = box]
+  pop_covid_swl [label = "Before 2020\n n = @@26", shape = box]
+
+  pop_domrep_srh [label = "Exclude DomRep\n n = @@28", shape = box]
+
+  excl_mem [label = "Exclude\n n = @@3"]
+  excl_occ [label = "Exclude\n n = @@5"]
+  excl_empl [label = "Exclude\n n = @@7"]
+  excl_gender [label = "Exclude\n n = @@9"]
+  excl_tud_srh [label = "Exclude\n n = @@13"]
+  excl_cbc_srh [label = "Exclude\n n = @@15"]
+  excl_tud_swl [label = "Exclude\n n = @@17"]
+  excl_cbc_swl [label = "Exclude\n n = @@19"]
+  excl_work_srh [label = "Excluded\n n = @@21"]
+  excl_work_swl [label = "Excluded\n n = @@23"]
+  excl_covid_srh[label = "Excluded\n n = @@25"]
+  excl_covid_swl[label = "Excluded\n n = @@27"]
+  excl_domrep_srh [label = "Excluded\n n = @@29"]
+  
+  pop_start -> pop_mem
+  pop_start -> excl_mem
+
+  pop_mem -> pop_occ
+  pop_mem -> excl_occ
+
+  pop_occ -> pop_empl
+  pop_occ -> excl_empl
+
+  pop_empl -> pop_gender
+  pop_empl -> excl_gender
+  
+  pop_gender -> pop_srh
+  pop_gender -> pop_swl
+  
+  pop_srh -> pop_tud_srh
+  pop_srh -> excl_tud_srh
+
+  pop_tud_srh -> pop_cbc_srh
+  pop_tud_srh -> excl_cbc_srh
+
+  pop_cbc_srh -> pop_work_srh
+  pop_cbc_srh -> excl_work_srh
+
+  pop_work_srh -> pop_covid_srh
+  pop_work_srh -> excl_covid_srh
+
+  pop_covid_srh -> pop_domrep_srh
+  pop_covid_srh -> excl_domrep_srh
+
+  pop_swl -> pop_tud_swl
+  pop_swl -> excl_tud_swl
+
+  pop_tud_swl -> pop_cbc_swl
+  pop_tud_swl -> excl_cbc_swl
+
+  pop_cbc_swl -> pop_work_swl
+  pop_cbc_swl -> excl_work_swl
+
+  pop_work_swl -> pop_covid_swl
+  pop_work_swl -> excl_covid_swl
+  
+}
+ [1]: format(n_0, big.mark = ",")
+ [2]: format(n_2, big.mark = ",")
+ [3]: format(n_0 - n_2, big.mark = ",")
+ [4]: format(n_3, big.mark = ",")
+ [5]: format(n_2 - n_3, big.mark = ",")
+ [6]: format(n_4, big.mark = ",")
+ [7]: format(n_3 - n_4, big.mark = ",")
+ [8]: format(n_5, big.mark = ",")
+ [9]: format(n_4 - n_5, big.mark = ",")
+ [10]: format(n_10_srh, big.mark = ",")
+ [11]: format(n_10_swl, big.mark = ",")
+ [12]: format(n_51_srh, big.mark = ",")
+ [13]: format(n_50_srh - n_51_srh, big.mark = ",")
+ [14]: format(n_52_srh, big.mark = ",")
+ [15]: format(n_51_srh - n_52_srh, big.mark = ",")
+ [16]: format(n_51_swl, big.mark = ",")
+ [17]: format(n_50_swl - n_51_swl, big.mark = ",")
+ [18]: format(n_52_swl, big.mark = ",")
+ [19]: format(n_51_swl - n_52_swl, big.mark = ",")
+ [20]: format(n_60_srh, big.mark = ",")
+ [21]: format(n_52_srh - n_60_srh, big.mark = ",")
+ [22]: format(n_60_swl, big.mark = ",")
+ [23]: format(n_52_swl - n_60_swl, big.mark = ",")
+ [24]: format(n_61_srh, big.mark = ",")
+ [25]: format(n_60_srh - n_61_srh, big.mark = ",")
+ [26]: format(n_61_swl, big.mark = ",")
+ [27]: format(n_60_swl - n_61_swl, big.mark = ",")
+ [28]: format(n_62_srh, big.mark = ",")
+ [29]: format(n_61_srh - n_62_srh, big.mark = ",")

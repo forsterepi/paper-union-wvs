@@ -1,0 +1,165 @@
+---
+title: "Descriptives text"
+format: pdf
+---
+
+```{r}
+#| label: get-models
+#| echo: false
+# Init cache
+cache <- storr::storr_rds("Cache")
+
+# Get data
+postdata <- cache$get("postdata")
+d_srh <- postdata$d_srh
+d_swl <- postdata$d_swl
+
+# Get models
+SrhTud0 <- cache$get("SrhTud0")
+SrhTud3 <- cache$get("SrhTud3")
+SwlTud0 <- cache$get("SwlTud0")
+SwlTud3 <- cache$get("SwlTud3")
+SrhCbc0 <- cache$get("SrhCbc0")
+SrhCbc3 <- cache$get("SrhCbc3")
+SwlCbc0 <- cache$get("SwlCbc0")
+SwlCbc3 <- cache$get("SwlCbc3")
+```
+
+```{r}
+#| label: get-result-text-numbers
+#| echo: false
+
+# Individuals
+all_srh <- d_srh |>
+  nrow() |>
+  format(big.mark = ",")
+
+all_swl <- d_swl |>
+  nrow() |>
+  format(big.mark = ",")
+
+# Missings
+all_missing_srh_low <- min(
+  d_srh |>
+    nrow() |>
+    magrittr::subtract(SrhTud0$nobs),
+  d_srh |>
+    nrow() |>
+    magrittr::subtract(SrhCbc0$nobs)
+) |>
+  format(big.mark = ",")
+
+all_missing_srh_high <- max(
+  d_srh |>
+    nrow() |>
+    magrittr::subtract(SrhTud3$nobs),
+  d_srh |>
+    nrow() |>
+    magrittr::subtract(SrhCbc3$nobs)
+) |>
+  format(big.mark = ",")
+
+all_missing_swl_low <- min(
+  d_swl |>
+    nrow() |>
+    magrittr::subtract(SwlTud0$nobs),
+  d_swl |>
+    nrow() |>
+    magrittr::subtract(SwlCbc0$nobs)
+) |>
+  format(big.mark = ",")
+
+all_missing_swl_high <- max(
+  d_swl |>
+    nrow() |>
+    magrittr::subtract(SwlTud3$nobs),
+  d_swl |>
+    nrow() |>
+    magrittr::subtract(SwlCbc3$nobs)
+) |>
+  format(big.mark = ",")
+
+# Countries
+n_countries_srh <- d_srh$c |>
+  unique() |>
+  length()
+
+n_countries_swl <- d_swl$c |>
+  unique() |>
+  length()
+
+c_in_swl_notin_srh <- d_swl$country[d_swl$country %notin% d_srh$country] |>
+  unique() |>
+  as.character() |>
+  stringi::stri_c(collapse = " and ")
+
+# Surveys
+srh_surveys <- d_srh$survey |> unique()
+swl_surveys <- d_swl$survey |> unique()
+
+n_surveys_srh <- srh_surveys |> length()
+n_surveys_swl <- swl_surveys |> length()
+
+s_in_srh_notin_swl <- srh_surveys[srh_surveys %notin% swl_surveys] |>
+  as.character()
+s_in_swl_notin_srh <- swl_surveys[swl_surveys %notin% srh_surveys] |>
+  as.character()
+
+surveys_by_class_srh <- d_srh |>
+  dplyr::select(c, country, year, class) |>
+  plyr::count() |>
+  dplyr::select(class) |>
+  plyr::count() |>
+  dplyr::mutate(
+    perc = (freq / sum(freq) * 100) |>
+      round(1)
+  )
+
+n_surveys_low_srh <- surveys_by_class_srh$freq[
+  surveys_by_class_srh$class == "low"
+]
+
+surveys_by_class_swl <- d_swl |>
+  dplyr::select(c, country, year, class) |>
+  plyr::count() |>
+  dplyr::select(class) |>
+  plyr::count() |>
+  dplyr::mutate(
+    perc = (freq / sum(freq) * 100) |>
+      round(1)
+  )
+
+n_surveys_low_swl <- surveys_by_class_swl$freq[
+  surveys_by_class_swl$class == "low"
+]
+
+if (identical(n_surveys_low_srh, n_surveys_low_swl)) {
+  n_surveys_low <- n_surveys_low_srh
+} else {
+  n_surveys_low <- "ERROR"
+}
+
+n_c_low_srh <- d_srh |>
+  dplyr::select(c, country, year, class) |>
+  plyr::count() |>
+  dplyr::filter(class == "low") |>
+  dplyr::select(country) |>
+  plyr::count() |>
+  nrow()
+
+n_c_low_swl <- d_swl |>
+  dplyr::select(c, country, year, class) |>
+  plyr::count() |>
+  dplyr::filter(class == "low") |>
+  dplyr::select(country) |>
+  plyr::count() |>
+  nrow()
+
+if (identical(n_c_low_srh, n_c_low_swl)) {
+  n_c_low <- n_c_low_srh
+} else {
+  n_c_low <- "ERROR"
+}
+```
+
+In total, `r all_srh` and `r all_swl` individuals participated in the included surveys for self-rated health and life satisfaction, respectively (see flowchart in Figure S1). Due to individual missing values, `r all_missing_srh_low`-`r all_missing_srh_high` (self-rated health) and `r all_missing_swl_low`-`r all_missing_swl_high` (life satisfaction) individuals were excluded across the different models. The datasets for self-rated health and life satisfaction included data from `r n_surveys_srh` and `r n_surveys_swl` individual surveys, i.e., individual waves in different countries, conducted in `r n_countries_srh` and `r n_countries_swl` countries, respectively, with life satisfaction data additionally including the `r c_in_swl_notin_srh`. For both self-rated health and life satisfaction, `r n_surveys_low` surveys from `r n_c_low` countries were conducted in countries classified as having low income at the time.
