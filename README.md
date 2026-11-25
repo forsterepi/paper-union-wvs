@@ -1,6 +1,6 @@
-[![DOI](https://zenodo.org/badge/1471468559.svg)](https://doi.org/10.5281/zenodo.24526076)
-
 # Analysis code for scientific article 
+
+[![DOI](https://zenodo.org/badge/1471468559.svg)](https://doi.org/10.5281/zenodo.24526076)
 
 Title: Trade union strength and workers’ health and wellbeing across low-, middle-, and high-income countries: a repeated cross-sectional study of 69 countries
 
