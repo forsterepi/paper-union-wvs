@@ -1,6 +1,7 @@
 # Analysis code for scientific article 
 
 Title: Trade union strength and workers’ health and wellbeing across low-, middle-, and high-income countries: a repeated cross-sectional study of 69 countries
+
 Authors: Felix Forster, Jacques Wels
 
 ## Guide for reproducing the results
